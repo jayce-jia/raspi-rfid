@@ -1,4 +1,4 @@
-package com.jayce.pn532.exception;
+package com.jayce.raspi.rfid.exception;
 
 /**
  * Created by Jaycejia on 2017/3/26.

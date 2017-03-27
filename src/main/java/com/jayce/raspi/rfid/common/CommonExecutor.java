@@ -1,4 +1,4 @@
-package com.jayce.pn532.common;
+package com.jayce.raspi.rfid.common;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingDeque;

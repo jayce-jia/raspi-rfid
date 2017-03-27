@@ -1,6 +1,6 @@
-package com.jayce.pn532.nfc;
+package com.jayce.raspi.rfid.nfc;
 
-import com.jayce.pn532.enu.CommandStatus;
+import com.jayce.raspi.rfid.enu.CommandStatus;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CFactory;
 

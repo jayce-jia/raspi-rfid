@@ -1,14 +1,13 @@
-package com.jayce.pn532.nfc;
+package com.jayce.raspi.rfid.nfc;
 
-import com.jayce.pn532.common.Initializer;
-import com.jayce.pn532.exception.InitializationException;
-import com.jayce.pn532.exception.NFCInitializationException;
+import com.jayce.raspi.rfid.common.Initializer;
+import com.jayce.raspi.rfid.exception.InitializationException;
+import com.jayce.raspi.rfid.exception.NFCInitializationException;
 import com.pi4j.io.i2c.I2CFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Created by Jaycejia on 2017/3/25.

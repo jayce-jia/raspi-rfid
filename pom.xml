@@ -16,7 +16,7 @@
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
     <build>
-        <finalName>raspberry-pn532</finalName>
+        <finalName>raspberry-rfid</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -36,7 +36,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.jayce.pn532.Main</mainClass>
+                            <mainClass>com.jayce.raspi.rfid.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -86,6 +86,23 @@
             <artifactId>janino</artifactId>
             <version>3.0.6</version>
         </dependency>
+        <!--网络-->
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+        <!--rxJava-->
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>adapter-rxjava</artifactId>
+            <version>2.2.0</version>
+        </dependency>
         <!-- junit4-->
         <dependency>
             <groupId>junit</groupId>
@@ -105,6 +122,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.22</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>2.2.0</version>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,8 @@
-package com.jayce.pn532.util;
+package com.jayce.raspi.rfid.util;
 
-import com.jayce.pn532.enu.SysConfig;
+import com.jayce.raspi.rfid.enu.SysConfig;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;

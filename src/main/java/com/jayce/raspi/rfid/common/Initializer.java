@@ -1,6 +1,6 @@
-package com.jayce.pn532.common;
+package com.jayce.raspi.rfid.common;
 
-import com.jayce.pn532.exception.InitializationException;
+import com.jayce.raspi.rfid.exception.InitializationException;
 
 /**
  * Created by Jaycejia on 2017/3/26.

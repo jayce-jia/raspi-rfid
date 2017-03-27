@@ -1,12 +1,12 @@
 
-package com.jayce.pn532.nfc;
+package com.jayce.raspi.rfid.nfc;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.jayce.pn532.enu.CommandStatus;
+import com.jayce.raspi.rfid.enu.CommandStatus;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
