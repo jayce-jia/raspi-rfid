@@ -1,21 +1,18 @@
 package com.jayce.raspi.rfid;
 
-import com.jayce.raspi.rfid.common.Initializer;
-import com.jayce.raspi.rfid.common.NFCEventLooper;
-import com.jayce.raspi.rfid.network.NetworkInitializer;
-import com.jayce.raspi.rfid.nfc.PN532Initializer;
+import com.jayce.raspi.rfid.common.NFCReader;
 import com.jayce.raspi.rfid.exception.InitializationException;
+import com.jayce.raspi.rfid.network.NetworkInitializer;
 import com.jayce.raspi.rfid.nfc.PN532;
+import com.jayce.raspi.rfid.nfc.PN532Initializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
-import rx.Scheduler;
-import rx.internal.schedulers.NewThreadScheduler;
-import rx.subjects.PublishSubject;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
-import java.util.Observable;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -34,9 +31,14 @@ public class Main {
             logger.error("初始化失败!", e);
             System.exit(0);
         }
-        NFCEventLooper looper = new NFCEventLooper(nfc);
-        PublishSubject<String> subject = looper.init();
-        subject.subscribe(uid -> logger.info("收到卡号回调：{}", uid));
-        looper.startLoop();
+        NFCReader reader = new NFCReader(nfc);
+        logger.info("Waiting for an ISO14443A Card ...");
+        Observable.interval(100L, TimeUnit.MILLISECONDS, Schedulers.immediate())
+                .map(interval -> reader.readCardUID())
+                .subscribe(uid -> {
+                    if (uid != null) {
+                        logger.info("读到卡号：{}", uid);
+                    }
+                });
     }
 }
