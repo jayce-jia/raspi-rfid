@@ -21,7 +21,7 @@ public class NetworkInitializer implements Initializer<Retrofit> {
     public Retrofit initialize() throws InitializationException {
         try {
             String serverUrl = (String) PropertiesUtil.getProperty(SysConfig.SERVER_IP);
-            Integer serverPort = (Integer) PropertiesUtil.getProperty(SysConfig.SERVER_PORT);
+            String serverPort = (String) PropertiesUtil.getProperty(SysConfig.SERVER_PORT);
             String context = (String) PropertiesUtil.getProperty(SysConfig.SERVER_CONTEXT);
             String baseUrl = serverUrl + "/" + serverPort + "/" + context + "/";
             OkHttpClient client = new OkHttpClient();
