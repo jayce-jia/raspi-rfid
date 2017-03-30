@@ -23,7 +23,7 @@ public class NetworkInitializer implements Initializer<Retrofit> {
             String serverUrl = (String) PropertiesUtil.getProperty(SysConfig.SERVER_IP);
             String serverPort = (String) PropertiesUtil.getProperty(SysConfig.SERVER_PORT);
             String context = (String) PropertiesUtil.getProperty(SysConfig.SERVER_CONTEXT);
-            String baseUrl = serverUrl + "/" + serverPort + "/" + context + "/";
+            String baseUrl = serverUrl + ":" + serverPort + "/" + context + "/";
             OkHttpClient client = new OkHttpClient();
             return new Retrofit.Builder()
                     .client(client)

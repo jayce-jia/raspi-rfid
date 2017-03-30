@@ -27,7 +27,7 @@ public class NFCReader {
                 for (int i = 0; i < readLength; i++) {
                     uid.append(Integer.toHexString(buffer[i]));
                 }
-                logger.info("UID Length: {} bytes  UID Value: [{}]", readLength, uid);
+                logger.debug("UID Length: {} bytes  UID Value: [{}]", readLength, uid);
                 return uid.toString();
             }
         } catch (InterruptedException e) {

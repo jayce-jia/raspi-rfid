@@ -3,6 +3,7 @@ package com.jayce.raspi.rfid;
 import com.jayce.raspi.rfid.common.NFCReader;
 import com.jayce.raspi.rfid.exception.InitializationException;
 import com.jayce.raspi.rfid.network.NetworkInitializer;
+import com.jayce.raspi.rfid.nfc.CardManager;
 import com.jayce.raspi.rfid.nfc.PN532;
 import com.jayce.raspi.rfid.nfc.PN532Initializer;
 import org.slf4j.Logger;
@@ -33,11 +34,13 @@ public class Main {
         }
         NFCReader reader = new NFCReader(nfc);
         logger.info("Waiting for an ISO14443A Card ...");
+        final CardManager cardManager = new CardManager(retrofit);
         Observable.interval(100L, TimeUnit.MILLISECONDS, Schedulers.immediate())
                 .map(interval -> reader.readCardUID())
                 .subscribe(uid -> {
                     if (uid != null) {
-                        logger.info("读到卡号：{}", uid);
+                        logger.debug("读到卡号：{}", uid);
+                        cardManager.onCard(uid);
                     }
                 });
     }
