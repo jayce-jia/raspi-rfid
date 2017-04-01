@@ -1,15 +1,15 @@
 package com.jayce.raspi.rfid.nfc;
 
+import com.jayce.raspi.rfid.enu.SysConfig;
 import com.jayce.raspi.rfid.http.CardService;
+import com.jayce.raspi.rfid.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.io.IOException;
 
 /**
  * Created by Jaycejia on 2017/3/30.
@@ -18,9 +18,13 @@ public class CardManager {
     private static final Logger logger = LoggerFactory.getLogger(CardManager.class);
     private final Retrofit retrofit;
     private CardInfo cardInfo;
+    private Long invalidTimeout;
+    private String fridgeId;
 
-    public CardManager(Retrofit retrofit) {
+    public CardManager(Retrofit retrofit) throws IOException {
         this.retrofit = retrofit;
+        this.invalidTimeout = Long.valueOf(String.valueOf(PropertiesUtil.getProperty(SysConfig.NFC_POLL_INVALID_TIMEOUT)));
+        this.fridgeId = (String) PropertiesUtil.getProperty(SysConfig.NFC_READER_ID);
     }
 
     public synchronized void onCard(String cardId) {
@@ -32,7 +36,7 @@ public class CardManager {
         String oldId = cardInfo.getCarId();
         if (oldId.equals(cardId)) {//如果读到之前的卡
             long current = System.currentTimeMillis();
-            if ((current - cardInfo.getTime()) > 1000L) {//如果距离上一次超过1s
+            if ((current - cardInfo.getTime()) > invalidTimeout) {//如果距离上一次超过1s
                 postNewCard(cardId);
                 cardInfo.setTime(current);
             }
@@ -47,7 +51,7 @@ public class CardManager {
     private void postNewCard(String cardId) {
         logger.info("向服务器发送新的cardId:{}", cardId.toUpperCase());
         retrofit.create(CardService.class)
-                .postNewCard(cardId)
+                .postNewCard(fridgeId, cardId)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<String>() {
                     @Override

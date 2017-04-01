@@ -9,7 +9,8 @@ public enum SysConfig {
     SERVER_CONTEXT("服务器项目名称", "server.context"),
 
     NFC_POLL_INTERVAL("轮询NFC间隔(ms)", "nfc.poll.interval"),
-    NFC_POLL_INVALID_TIMEOUT("NFC读取成功后下一次读取相同tag的间隔(ms)", "nfc.poll.invalid.timeout");
+    NFC_POLL_INVALID_TIMEOUT("NFC读取成功后下一次读取相同tag的间隔(ms)", "nfc.poll.invalid.timeout"),
+    NFC_READER_ID("冰箱NFC模块id", "nfc.reader.sn");
 
 
     private String confName;

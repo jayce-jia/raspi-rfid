@@ -1,17 +1,20 @@
 package com.jayce.raspi.rfid;
 
 import com.jayce.raspi.rfid.common.NFCReader;
+import com.jayce.raspi.rfid.enu.SysConfig;
 import com.jayce.raspi.rfid.exception.InitializationException;
 import com.jayce.raspi.rfid.network.NetworkInitializer;
 import com.jayce.raspi.rfid.nfc.CardManager;
 import com.jayce.raspi.rfid.nfc.PN532;
 import com.jayce.raspi.rfid.nfc.PN532Initializer;
+import com.jayce.raspi.rfid.util.PropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +22,7 @@ public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
         PN532 nfc = null;
         Retrofit retrofit = null;
         try {
@@ -35,8 +38,9 @@ public class Main {
         NFCReader reader = new NFCReader(nfc);
         logger.info("Waiting for an ISO14443A Card ...");
         final CardManager cardManager = new CardManager(retrofit);
-        Observable.interval(100L, TimeUnit.MILLISECONDS, Schedulers.immediate())
-                .map(interval -> reader.readCardUID())
+        long interval = Long.valueOf(String.valueOf(PropertiesUtil.getProperty(SysConfig.NFC_POLL_INTERVAL))) ;
+        Observable.interval(interval, TimeUnit.MILLISECONDS, Schedulers.immediate())
+                .map(inter -> reader.readCardUID())
                 .subscribe(uid -> {
                     if (uid != null) {
                         logger.debug("读到卡号：{}", uid);
