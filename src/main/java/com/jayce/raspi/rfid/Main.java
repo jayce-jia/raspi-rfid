@@ -44,7 +44,7 @@ public class Main {
                 .subscribe(uid -> {
                     if (uid != null) {
                         logger.debug("读到卡号：{}", uid);
-                        cardManager.onCard(uid);
+                        cardManager.onCard(uid.toUpperCase());
                     }
                 });
     }

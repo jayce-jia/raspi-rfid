@@ -49,7 +49,7 @@ public class CardManager {
     }
 
     private void postNewCard(String cardId) {
-        logger.info("向服务器发送新的cardId:{}", cardId.toUpperCase());
+        logger.info("向服务器发送新的cardId:{}", cardId);
         retrofit.create(CardService.class)
                 .postNewCard(fridgeId, cardId)
                 .subscribeOn(Schedulers.io())
