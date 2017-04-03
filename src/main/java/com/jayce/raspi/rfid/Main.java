@@ -12,11 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import rx.Observable;
-import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -38,14 +36,19 @@ public class Main {
         NFCReader reader = new NFCReader(nfc);
         logger.info("Waiting for an ISO14443A Card ...");
         final CardManager cardManager = new CardManager(retrofit);
-        long interval = Long.valueOf(String.valueOf(PropertiesUtil.getProperty(SysConfig.NFC_POLL_INTERVAL))) ;
-        Observable.interval(interval, TimeUnit.MILLISECONDS, Schedulers.immediate())
-                .map(inter -> reader.readCardUID())
-                .subscribe(uid -> {
-                    if (uid != null) {
-                        logger.debug("读到卡号：{}", uid);
-                        cardManager.onCard(uid.toUpperCase());
-                    }
-                });
+        Long interval = Long.valueOf(String.valueOf(PropertiesUtil.getProperty(SysConfig.NFC_POLL_INTERVAL)));
+        Observable.create((Observable.OnSubscribe<String>) subscriber -> {
+            String uid;
+            while (true) {
+                uid = reader.readCardUID();
+                if (uid != null) {
+                    subscriber.onNext(uid);
+                }
+                try {
+                    Thread.sleep(interval);
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }).subscribe(uid -> cardManager.onCard(uid.toUpperCase()));
     }
 }
