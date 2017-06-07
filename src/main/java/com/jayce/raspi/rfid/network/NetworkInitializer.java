@@ -11,6 +11,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jaycejia on 2017/3/27.
@@ -24,7 +25,9 @@ public class NetworkInitializer implements Initializer<Retrofit> {
             String serverPort = (String) PropertiesUtil.getProperty(SysConfig.SERVER_PORT);
             String context = (String) PropertiesUtil.getProperty(SysConfig.SERVER_CONTEXT);
             String baseUrl = serverUrl + ":" + serverPort + "/" + context + "/";
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(5*1000L, TimeUnit.MILLISECONDS)
+                    .build();
             return new Retrofit.Builder()
                     .client(client)
                     .baseUrl(baseUrl)
